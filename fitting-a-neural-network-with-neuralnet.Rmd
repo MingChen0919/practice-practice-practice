@@ -1,0 +1,9 @@
+
+
+# the dataset
+set.seed(500)
+library(MASS)
+data <- Boston
+
+# check if there is missing data
+apply(data, 2, function(x) sum(is.na(x)))

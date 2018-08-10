@@ -1,0 +1,38 @@
+---
+title: "Fitting a Neural Network in R with neuralnet"
+author: "Ming Chen"
+date: "8/9/2018"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+
+# Article
+
+[https://datascienceplus.com/fitting-neural-network-in-r/](https://datascienceplus.com/fitting-neural-network-in-r/)
+
+
+# the dataset
+```{r}
+set.seed(500)
+library(MASS)
+data <- Boston
+```
+
+
+# check if there is missing data
+```{r}
+apply(data, 2, function(x) sum(is.na(x)))
+```
+
+# split data
+
+```{r}
+index <- sample(1:nrow(data), round(0.75))
+```
+
+
+
