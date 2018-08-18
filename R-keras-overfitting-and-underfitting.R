@@ -124,3 +124,52 @@ ggplot(compare_cx, aes(x=epochs, y=loss, color=model, linetype=type)) +
 ## STRATEGIES
 # option 1: add weight regularization
 # option 2: add dropout
+
+# regularization
+l2_model <- 
+  keras_model_sequential() %>%
+  layer_dense(units = 16, activation = "relu", input_shape = 10000,
+              kernel_regularizer = regularizer_l2(l = 0.001)) %>%
+  layer_dense(units = 16, activation = "relu",
+              kernel_regularizer = regularizer_l2(l = 0.001)) %>%
+  layer_dense(units = 1, activation = "sigmoid")
+
+l2_model %>% compile(
+  optimizer = "adam",
+  loss = "binary_crossentropy",
+  metrics = list("accuracy")
+)
+
+l2_history <- l2_model %>% fit(
+  train_data,
+  train_labels,
+  epochs = 20,
+  batch_size = 512,
+  validation_data = list(test_data, test_labels),
+  verbose = 2
+)
+
+
+# add dropout
+dropout_model <- 
+  keras_model_sequential() %>%
+  layer_dense(units = 16, activation = "relu", input_shape = 10000) %>%
+  layer_dropout(0.6) %>%
+  layer_dense(units = 16, activation = "relu") %>%
+  layer_dropout(0.6) %>%
+  layer_dense(units = 1, activation = "sigmoid")
+
+dropout_model %>% compile(
+  optimizer = "adam",
+  loss = "binary_crossentropy",
+  metrics = list("accuracy")
+)
+
+dropout_history <- dropout_model %>% fit(
+  train_data,
+  train_labels,
+  epochs = 20,
+  batch_size = 512,
+  validation_data = list(test_data, test_labels),
+  verbose = 2
+)
