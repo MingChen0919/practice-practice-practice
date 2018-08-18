@@ -122,3 +122,13 @@ rf_fit2 <- h2o.randomForest(x = x,
                             # validation_frame = valid, # only used if stopping_rounds > 0,
                             ntrees = 100,
                             seed = 1)
+
+# let's compare the performance of the two RFs
+rf_perf1 <- h2o.performance(model = rf_fit1,
+                            newdata = test)
+rf_perf2 <- h2o.performance(model = rf_fit2,
+                            newdata = test)
+
+# print model performance
+h2o.auc(rf_perf1)
+h2o.auc(rf_perf2)
