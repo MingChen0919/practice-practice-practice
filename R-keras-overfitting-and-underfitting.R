@@ -173,3 +173,23 @@ dropout_history <- dropout_model %>% fit(
   validation_data = list(test_data, test_labels),
   verbose = 2
 )
+
+
+
+# PLOT THE TRINING AND VALIDATION LOSS
+compare_cx = data.frame(
+  baseline_train = baseline_history$metrics$loss,
+  baseline_val = baseline_history$metrics$val_loss,
+  l2_train =l2_history$metrics$loss,
+  l2_val = l2_history$metrics$val_loss,
+  dropout_train = dropout_history$metrics$loss,
+  dropout_val = dropout_history$metrics$val_loss,
+  epochs = 1:20
+) %>% 
+  gather(key='type', value = 'loss', -epochs)
+
+compare_cx$model = str_replace(compare_cx$type, '_.+', '')
+compare_cx$type = str_replace(compare_cx$type, '.+_', '')
+
+ggplot(compare_cx, aes(x=epochs, y=loss, color=model, linetype=type)) +
+  geom_line()
